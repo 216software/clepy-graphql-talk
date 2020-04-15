@@ -1,0 +1,104 @@
+++++++++++++++++++++++++++++++++++
+GraphQL and Python and my Opinions
+++++++++++++++++++++++++++++++++++
+
+What problem led to GraphQL?
+============================
+
+What is GraphQL?
+================
+
+GraphQL vs good old JSON APIs
+=============================
+
+How to write a Python client for the github GraphQL API?
+========================================================
+
+How to write a python GraphQL server?
+=====================================
+
+Some analogies that help me understand it
+=========================================
+
+GraphQL is kind of like a SQL view
+----------------------------------
+
+In SQL, you make a bunch of tables.  Then you write a select query that
+joins all those tables together.
+
+For example, imagine a database for a small bar has these tables:
+
+* musicians
+
+  * musician_id (unique)
+  * name
+  * description
+  * thumbnail_picture_url
+
+* events
+  * event_id (unique)
+  * name
+  * event_date
+  * doors_open
+  * ticket_price
+
+* event_lineups
+  * event_id
+  * musician_id
+  * lineup_order
+  * headliner (true or false)
+
+You might run a query like this to show upcoming events in the next 30
+days:
+
+  select events.event_date,
+
+  join musicians
+  on events.musician_id = musicians.musician_id
+
+  -- only show future shows
+  where events.event_date > current_timestamp
+
+  -- only show the next 30 days worth of events
+  and events.event_date < current_timestamp + interval 30 days
+
+  order by events.event_date,
+  events.booking_order
+
+
+
+
+
+
+
+
+
+If you find yourself doing that same select a bunch of times, you
+might create a view in your database, and just select from that view.
+
+
+
+
+
+GraphQL is kind of like that view, that joins as many as your tables
+together as possible, and then when you query that view, you list out
+the particular columns you want.
+
+
+
+
+What I like
+===========
+
+What I dislike
+==============
+
+When I would use it
+===================
+
+It makes a ton of sense for Github to set up a GraphQL API.  Every
+different client can request a subset of all the possible s
+
+
+
+.. vim: set syntax=rst:
