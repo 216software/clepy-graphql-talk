@@ -2,27 +2,98 @@
 GraphQL and Python and my Opinions
 ++++++++++++++++++++++++++++++++++
 
-What problem led to GraphQL?
-============================
+GraphQL is three steps forward and two steps back.
 
-At one time,
+What led to GraphQL?
+====================
 
-Then relational databases climbed out of the primordial ooze in the
-1970s.
+This is the story I heard.  I don't know how true it is.
 
-We all learned normalization forms and we wrote queries that joined
-tables in novel and interesting ways.
+The Facebook mobile app team complained that working with their REST API
+had these problems:
 
-Then we lost our way.
+*   Each screen required dozens of separate queries.
 
-We made REST endpoints for each table separate and then used application
-code to join data.
+*   Each query is a network call that used up limited customer data.
+
+*   Even if data is free, each query takes time!
+
+*   Each response came back with way more data than they really needed.
+    There was no built-in way to list the fields they needed.
+
+This is what I imagine they dealt with
+======================================
+
+Pretend we have to make a news feed page.  We might do it like this:
+
+A.  Get information about this user's friends (1 query).
+
+B.  For each friend, get recent posts for that user.  That means you
+    make N queries, where is the number of friends of this person.
+
+    After each query, link the post with the friend's information, like
+    their display name and profile picture, in the application code.
+
+C.  Sort the posts by time (or whatever secret they use) in application
+    code.
+
+D.  Display the first X posts, and in each post, display a few fields.
+
+They could just write an API for every screen!
+==============================================
+
+When you make a screen, you tell the API team what data you need, and
+they make you an API for that screen, with exactly the data you need,
+fetched as efficiently as possible.
+
+Problems:
+
+*   This is labor-intensive!
+
+*   When screen A and screen B and screen C share 50% of the same needs,
+    you either copy and paste code, or you don't fetch it efficiently,
+    or you write a complex SQL query that triggers madness in all who
+    try to read it.
+
+*   What if screens are dynamic / determined at run time?  For example,
+    imagine a web-based spreadsheet where people can punch buttons to
+    show and hide columns.
+
+They could just cache in the client!
+====================================
+
+The app could cache as much data as possible and it is really clever
+about only pulling down updates.
+
+The source control system git kind of works like this.  So does couch
+DB.
+
+Problems:
+
+*   In my experience, bad caching is the single biggest source of bugs.
+
+*   Wikipedia has 17 different cache replacement algorithms and all of
+    them have one scenario where they don't work great.
+
+GraphQL examples
+================
+
+You can do three things with GraphQL:
+
+*   do a query (like a read or a select)
+*   do a mutation (like insert or update or delete)
+*   subscribe to a topic (get notifications from the server)
+
+GraphQL query examples
+======================
+
+
 
 GraphQL is kind of like a SQL view
 ==================================
 
 In SQL, you make a bunch of tables.  Then you write a select query that
-joins all those tables together.
+lists what columns you want.
 
 The Grog Shop is a small bar and music venue in Cleveland Heights.  They
 keep a list of upcoming shows on their website.
@@ -98,26 +169,24 @@ What I like
 What I dislike
 ==============
 
-*   Using curl with GraphQL isn't fun
-
-*   Using POSTs for reads goes against tradition
-
 *   Selectively Caching POSTs based on payloads is not easy
 
-*   You need to log POST data if you want to analyze slow operations
+*   You need to log POST data if you want to analyze slow operations.
+    Everything looks the same!
 
-*   Or you need a new set of tools
+*   Using curl with GraphQL isn't fun!
+
+*   Using POSTs for reads goes against tradition.
+
 
 Warnings
 ========
 
 *   You'll likely need to handle mutations one by one.
 
-TODO: put in a picture of that misfits "evil never dies" album cover but put
-"n+1" over evil.
-
-*   Ruby on Rails might be in the rear view mirror, but N+1 is back in a
-    big way!
+*   People love putting a single GraphQL server in front of multiple
+    services.  So depending on what fields you ask for, your query could
+    be doing completely different things!
 
 *   Like many other abstractions, you often will need to know what is
     going on underneath:
@@ -148,9 +217,7 @@ TODO: put in a picture of that misfits "evil never dies" album cover but put
     need to make sure that Matt is only accessing data that Matt is
     blessed to access.
 
-    To be fair, this is a problem that has been around forever.
-
-
+    This problem has been around forever.
 
 When I would use it
 ===================
@@ -161,13 +228,6 @@ different client can request a subset of all the possible fields.
 Github would have to make dozens and dozens of JSON APIs to accomodate
 all the different subsets of data you can get back.
 
-
-What is GraphQL?
-================
-
-GraphQL vs good old JSON APIs
-=============================
-
 How to write a Python client for the github GraphQL API?
 ========================================================
 
@@ -177,8 +237,11 @@ How to write a python GraphQL server?
 Final Thoughts
 ==============
 
+3 steps forward, two steps back.
+
 GraphQL is a big step forward when it comes to writing APIs for reading
 data.
+
 
 
 
