@@ -1,23 +1,13 @@
 # vim: set expandtab ts=4 sw=4 filetype=python fileencoding=utf8:
 
-# curl -H "Authorization: bearer $GITHUB_TOKEN" https://api.github.com/graphql
-
 import os
+import pprint
 
 import gql
 import requests
 
 from gql import gql, Client
 from gql.transport.requests import RequestsHTTPTransport
-
-
-# curl -H "Authorization: bearer $GITHUB_TOKEN" -X POST -d '
-#  {
-#         "query": "query { viewer { login company }}"
-#          }
-#          ' https://api.github.com/graphql
-#          {"data":{"viewer":{"login":"mw44118","company":"216 Software,
-#          LLC"}}}
 
 if __name__ == "__main__":
 
@@ -37,7 +27,6 @@ if __name__ == "__main__":
         )
 
         client = Client(
-            retries=3,
             transport=sample_transport,
             fetch_schema_from_transport=True,
         )
@@ -53,4 +42,5 @@ if __name__ == "__main__":
 
         x = client.execute(query)
 
-        print(x)
+        print(type(x))
+        pprint.pprint(x)

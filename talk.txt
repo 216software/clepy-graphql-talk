@@ -227,18 +227,16 @@ Warnings
     This problem has been around forever.
 
 
-
 How to write a Python client for the github GraphQL API?
 ========================================================
 
 
 
 
+
+
 How to write a python GraphQL server?
 =====================================
-
-
-
 
 
 
