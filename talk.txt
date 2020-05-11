@@ -90,17 +90,86 @@ Using the github API...
 
 https://developer.github.com/v4/explorer/
 
+*   Get "stuff" about the viewer, like their name and company::
+
+      {
+        viewer {
+          login
+          company
+        }
+      }
+
+*   Show how to get "stuff" about some arbitrary user (take a name from
+    the audience), like the repositories of all the organizations this
+    user belongs to::
+
+      {
+        user(login: "bormesh") {
+          id
+          name
+          company
+          email
+          organizations(first: 10) {
+            edges {
+              node {
+                name
+                repositories(first: 10) {
+                  nodes {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+
+Using curl is possible and it is not much fun!
+==============================================
+
+Look at these files:
+
+  *   curl_example_viewer.sh
+  *   curl_example_user.sh
+
+    #! /bin/bash -e
+
+    echo "Looking up stuff for $1..."
+
+    /usr/bin/curl -X POST \
+    -H "Authorization: bearer $GITHUB_TOKEN" \
+    -d '{ "query": "query { user(login: \"'$1'\") { login company }}"
+    }' https://api.github.com/graphql
+
+
 
 GraphQL is kind of like a SQL view
 ==================================
 
-In SQL, you make a bunch of tables.  Then you write a select query that
-lists what columns you want.
+SQL selects work a little like this:
+
+*   you list the tables you want to pull stuff from
+*   you list the rows you want from those tables
+*   you list the columns you want from those tables
+*   you describe how you want to join those tables
+
+
+
+Contrived SQL example
+=====================
+
+Show the next 30 days of who is playing
+
+select musicians.name, musicians.instagram_name
+from musicians
+join schedule
+
+
+
 
 The Grog Shop is a small bar and music venue in Cleveland Heights.  They
 keep a list of upcoming shows on their website.
-
-TODO: show a picture of upcoming shows at The Grog Shop.
 
 You can imagine that a database for the Grog Shop has these tables:
 
