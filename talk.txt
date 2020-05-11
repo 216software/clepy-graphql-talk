@@ -24,20 +24,17 @@ had these problems:
 This is what I imagine they dealt with
 ======================================
 
-Pretend we have to make a news feed page.  We might do it like this:
+Pretend we have to make the Facebook news feed page.  We might do it like
+this:
 
-A.  Get information about this user's friends (1 query).
+A.  Get this user's friends (1 query).
 
 B.  For each friend, get recent posts for that user.  That means you
     make N queries, where is the number of friends of this person.
 
-    After each query, link the post with the friend's information, like
-    their display name and profile picture, in the application code.
+C.  Sort the posts by time (or whatever method they use) in application code.
 
-C.  Sort the posts by time (or whatever secret they use) in application
-    code.
-
-D.  Display the first X posts, and in each post, display a few fields.
+D.  Show the first X posts.
 
 They could just write an API for every screen!
 ==============================================
@@ -65,15 +62,17 @@ They could just cache in the client!
 The app could cache as much data as possible and it is really clever
 about only pulling down updates.
 
-The source control system git kind of works like this.  So does couch
-DB.
+The source control system git kind of works like this.  So does couchDB.
 
 Problems:
 
-*   In my experience, bad caching is the single biggest source of bugs.
+*   In my experience, caching is the single biggest source of bugs.
 
 *   Wikipedia has 17 different cache replacement algorithms and all of
     them have one scenario where they don't work great.
+
+However, this is a really interesting (to me) idea!
+
 
 GraphQL examples
 ================
@@ -87,6 +86,9 @@ You can do three things with GraphQL:
 GraphQL query examples
 ======================
 
+Using the github API...
+
+https://developer.github.com/v4/explorer/
 
 
 GraphQL is kind of like a SQL view
@@ -176,8 +178,13 @@ What I dislike
 
 *   Using curl with GraphQL isn't fun!
 
-*   Using POSTs for reads goes against tradition.
+*   Using POSTs for reads goes against tradition.  So many tools
+    depend on this tradition!
 
+*   Downloading a schema triggers bad SOAP and CORBA nightmares.
+
+*   Schemas where the return type is JSON shut down the client's ability
+    to cherry-pick the returned data.
 
 Warnings
 ========
@@ -219,29 +226,16 @@ Warnings
 
     This problem has been around forever.
 
-When I would use it
-===================
 
-It makes a ton of sense for Github to set up a GraphQL API.  Every
-different client can request a subset of all the possible fields.
-
-Github would have to make dozens and dozens of JSON APIs to accomodate
-all the different subsets of data you can get back.
 
 How to write a Python client for the github GraphQL API?
 ========================================================
 
+
+
+
 How to write a python GraphQL server?
 =====================================
-
-Final Thoughts
-==============
-
-3 steps forward, two steps back.
-
-GraphQL is a big step forward when it comes to writing APIs for reading
-data.
-
 
 
 
