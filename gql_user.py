@@ -32,15 +32,17 @@ if __name__ == "__main__":
         )
 
         query = gql('''
-            query {
-                viewer {
+            query getUserData($github_user: String!) {
+                user(login: $github_user) {
                     login
                     company
                 }
             }
         ''')
 
-        x = client.execute(query)
+        query_vars = {"github_user":"bormesh"}
+
+        x = client.execute(query, query_vars)
 
         print(type(x))
         pprint.pprint(x)

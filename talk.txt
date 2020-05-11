@@ -73,7 +73,6 @@ Problems:
 
 However, this is a really interesting (to me) idea!
 
-
 GraphQL examples
 ================
 
@@ -90,43 +89,98 @@ Using the github API...
 
 https://developer.github.com/v4/explorer/
 
-*   Get "stuff" about the viewer, like their name and company::
+Simple example
+==============
 
-      {
-        viewer {
-          login
-          company
-        }
+Get "stuff" about the viewer, like their name and company::
+
+    {
+      viewer {
+        login
+        company
       }
+    }
 
-*   Show how to get "stuff" about some arbitrary user (take a name from
-    the audience), like the repositories of all the organizations this
-    user belongs to::
 
-      {
-        user(login: "bormesh") {
-          id
-          name
-          company
-          email
-          organizations(first: 10) {
-            edges {
-              node {
-                name
-                repositories(first: 10) {
-                  nodes {
-                    name
-                  }
-                }
-              }
+Use a parameter in a query
+==========================
+
+Get "stuff" about some arbitrary user (take a name from the audience)::
+
+    {
+      user(login: "bormesh") {
+        id
+        name
+        company
+        email
+      }
+    }
+
+
+Get my most recent gists
+========================
+
+This is where it gets a little more interesting::
+
+    {
+      viewer {
+        login
+        company
+        gists(orderBy: {field: CREATED_AT, direction: DESC}, first: 10) {
+          edges {
+            node {
+              description
+              url
+              createdAt
             }
           }
         }
       }
+    }
+
+If this were SQL, I would need to specify how to connect this viewer to
+the company.
 
 
-Using curl is possible and it is not much fun!
-==============================================
+Get the most recent open issues for a particular repository
+======================================================
+
+One repo has many issues::
+
+    {
+      repository(name: "horsemeat", owner: "216software") {
+        name
+        description
+        createdAt
+        issues(first: 10, orderBy: {field: CREATED_AT, direction: DESC}) {
+          edges {
+            node {
+              id
+              title
+            }
+          }
+        }
+      }
+    }
+
+
+How to write a Python client for the github GraphQL API?
+========================================================
+
+These examples use the gql_ package.
+
+.. _gql: https://github.com/graphql-python/gql
+
+*   gql_viewer.py
+*   gql_user.py uses a parameter
+
+Example
+
+
+
+
+Using curl is possible and it is terrible!
+==========================================
 
 Look at these files:
 
@@ -135,14 +189,14 @@ Look at these files:
 
     #! /bin/bash -e
 
-    echo "Looking up stuff for $1..."
+    echo "Looking up stuff for $2..."
 
     /usr/bin/curl -X POST \
     -H "Authorization: bearer $GITHUB_TOKEN" \
     -d '{ "query": "query { user(login: \"'$1'\") { login company }}"
     }' https://api.github.com/graphql
 
-
+So much escaping!
 
 GraphQL is kind of like a SQL view
 ==================================
@@ -247,13 +301,14 @@ What I dislike
 
 *   Using curl with GraphQL isn't fun!
 
-*   Using POSTs for reads goes against tradition.  So many tools
-    depend on this tradition!
+*   Using POSTs for reads goes against tradition.
 
-*   Downloading a schema triggers bad SOAP and CORBA nightmares.
+*   Downloading a schema triggers SOAP and CORBA nightmare flashbacks.
 
 *   Schemas where the return type is JSON shut down the client's ability
     to cherry-pick the returned data.
+
+*   two-space indents
 
 Warnings
 ========
@@ -296,19 +351,13 @@ Warnings
     This problem has been around forever.
 
 
-How to write a Python client for the github GraphQL API?
-========================================================
-
-
-
-
-
-
 How to write a python GraphQL server?
 =====================================
 
 
+Talk to me!
+===========
 
-
+matt@216software.com
 
 .. vim: set syntax=rst:
