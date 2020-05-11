@@ -18,6 +18,17 @@ How to write a python GraphQL server?
     your mutations.
 
 
+Stupidest possible schema
+=========================
+
+ariadne_example.py
+
+Use it like this::
+
+  curl -H "Content-Type: application/json" -X POST -d '{"query": "query {demo {current_timestamp bogus_field_a bogus_field_b} }"}' http://127.0.0.1:8000
+
+
+
 The schema for that simple bar
 ==============================
 
@@ -39,4 +50,5 @@ Warnings
     You limit access to logged-in users.  But in your resolvers, you
     need to make sure that Matt is only accessing data that Matt is
     blessed to access.
+
 
