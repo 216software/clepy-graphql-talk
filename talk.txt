@@ -24,8 +24,8 @@ had these problems:
 This is what I imagine they dealt with
 ======================================
 
-Pretend we have to make the Facebook news feed page.  We might do it like
-this:
+Pretend we have to make the Facebook news feed page.  We might do it
+like this:
 
 A.  Get this user's friends (1 query).
 
@@ -106,7 +106,6 @@ Get "stuff" about some arbitrary user (take a name from the audience)::
       }
     }
 
-
 Get my most recent gists
 ========================
 
@@ -131,11 +130,11 @@ This is where it gets a little more interesting::
 If this were SQL, I would need to specify how to connect this viewer to
 the company.
 
+Get recent open issues for a particular repository
+==================================================
 
-Get the most recent open issues for a particular repository
-======================================================
-
-One repo has many issues::
+One repo has many issues (especially if it is something I've worked
+on)::
 
     {
       repository(name: "horsemeat", owner: "216software") {
@@ -170,7 +169,7 @@ gql_user.py
 
 Notice:
 
-*   I had to spell out the variables I was gonna use at the beginning
+*   I had to spell out the variables I was gonna use at the beginning!
 
 *   The dollar sign is in the query, but not in the variable name.
 
@@ -204,40 +203,6 @@ GraphQL is kind of like that view!
 When you have that view, you query it, and you list out what rows and
 what columns you want.
 
-How to write a python GraphQL server?
-=====================================
-
-1.  First you write a schema:
-
-    a.  You write your types.  I think of these as the nouns.
-
-    b.  Next you write queries on those types.  I think of these as
-        the reads, or your GET API endpoints, or your SELECT queries in
-        SQL.
-
-    c.  You write mutations.  These are your writes.  Maybe your inserts, updates,
-        and deletes.
-
-    d.  I'm skipping how to write subscriptions.  They sure look cool!
-
-2.  Outside your schema, you write resolvers for your queries and for
-    your mutations.
-
-
-The schema for that simple bar
-==============================
-
-bogus_schema.graphql
-
-There's a war going on over how much should we write these schemas by
-hand, versus use code to build them up, versus use code to infer them by
-studying the underlying datasources, like databases, or REST APIs.
-
-
-
-
-
-
 What I like
 ===========
 
@@ -248,7 +213,6 @@ What I like
 *   If some of your data is expensive to get, in other words, really
     slow to retrieve, then you can write a resolver so that it only
     retrieves that data when explicitly asked for.
-
 
 What I dislike
 ==============
@@ -271,8 +235,6 @@ What I dislike
 
 Warnings
 ========
-
-*   You'll likely need to handle mutations one by one.
 
 *   People love putting a single GraphQL server in front of multiple
     services.  So depending on what fields you ask for, your query could
@@ -297,17 +259,6 @@ Warnings
 
         You can't tell unless you read the resolvers.
 
-*   When you write resolvers, you need to make sure that you think
-    through who is asking for what data.
-
-    In other words, GraphQL doesn't solve thorny authorization issues.
-
-    For example, imagine that you make a GraphQL interface for a bank.
-    You limit access to logged-in users.  But in your resolvers, you
-    need to make sure that Matt is only accessing data that Matt is
-    blessed to access.
-
-    This problem has been around forever.
 
 Using curl with GraphQL is terrible!
 ====================================
