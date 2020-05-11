@@ -16,6 +16,7 @@ type Show {
 }
 
 type Query {
+  current_timestamp: String
   upcoming_shows: [Show]
   when_is_x_playing_next(musician_name: String!): Show
   musician_by_name(musician_name: String!): Musician

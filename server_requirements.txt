@@ -1,5 +1,4 @@
+cython
 graphql-core==3.0.3
 ariadne
 psycopg2
-gql
-
