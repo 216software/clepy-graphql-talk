@@ -1,0 +1,26 @@
+type Musician {
+  musician_id: Int!
+  name: String!
+  website_url: String
+}
+
+type Event {
+  event_date: String!
+  musician_id: Int!
+}
+
+type Show {
+  event_date: String!
+  musician_name: String!
+  musician_website: String
+}
+
+type Query {
+  upcoming_shows: [Show]
+  when_is_x_playing_next(musician_name: String!): Show
+  musician_by_name(musician_name: String!): Musician
+}
+
+type Mutation {
+  schedule_musician(event_date: String!, musician_id: String!): Show
+}

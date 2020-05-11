@@ -73,17 +73,8 @@ Problems:
 
 However, this is a really interesting (to me) idea!
 
-GraphQL examples
-================
-
-You can do three things with GraphQL:
-
-*   do a query (like a read or a select)
-*   do a mutation (like insert or update or delete)
-*   subscribe to a topic (get notifications from the server)
-
-GraphQL query examples
-======================
+GraphQL client query examples
+=============================
 
 Using the github API...
 
@@ -100,7 +91,6 @@ Get "stuff" about the viewer, like their name and company::
         company
       }
     }
-
 
 Use a parameter in a query
 ==========================
@@ -164,120 +154,89 @@ One repo has many issues::
     }
 
 
-How to write a Python client for the github GraphQL API?
-========================================================
+Really simple python client
+===========================
 
 These examples use the gql_ package.
 
 .. _gql: https://github.com/graphql-python/gql
 
-*   gql_viewer.py
-*   gql_user.py uses a parameter
+gql_viewer.py
 
-Example
+Python client example using a variable
+======================================
 
+gql_user.py
 
+Notice:
 
+*   I had to spell out the variables I was gonna use at the beginning
 
-Using curl is possible and it is terrible!
-==========================================
-
-Look at these files:
-
-  *   curl_example_viewer.sh
-  *   curl_example_user.sh
-
-    #! /bin/bash -e
-
-    echo "Looking up stuff for $2..."
-
-    /usr/bin/curl -X POST \
-    -H "Authorization: bearer $GITHUB_TOKEN" \
-    -d '{ "query": "query { user(login: \"'$1'\") { login company }}"
-    }' https://api.github.com/graphql
-
-So much escaping!
-
-GraphQL is kind of like a SQL view
-==================================
-
-SQL selects work a little like this:
-
-*   you list the tables you want to pull stuff from
-*   you list the rows you want from those tables
-*   you list the columns you want from those tables
-*   you describe how you want to join those tables
-
+*   The dollar sign is in the query, but not in the variable name.
 
 
 Contrived SQL example
 =====================
 
-Show the next 30 days of who is playing
+Imagine a small bar has a database to track musicians and when they
+play::
 
-select musicians.name, musicians.instagram_name
-from musicians
-join schedule
+    bogus_bar_1.sql
 
+If you love SQL, it's easy to do stuff like this::
 
+    -- List the schedule.
+    select events.event_date, musicians.name, musicians.website_url
+    from events
+    join musicians
+    on events.musician_id = musicians.musician_id
+    where event_date > current_timestamp
+    and event_date < current_timestamp + interval '30 days'
+    order by event_date
 
+But maybe you want to make a view to make it easier on yourself, so you
+make a view, that joins the tables together::
 
-The Grog Shop is a small bar and music venue in Cleveland Heights.  They
-keep a list of upcoming shows on their website.
-
-You can imagine that a database for the Grog Shop has these tables:
-
-* musicians
-
-  * musician_id
-  * name
-  * description
-  * thumbnail_picture_url
-
-* events
-  * event_id
-  * name
-  * event_date
-  * doors_open
-  * ticket_price
-
-* event_lineups
-  * event_id
-  * musician_id
-  * lineup_order
-  * headliner (true or false)
-
-TODO: write a SQL file with the actual table definitions for these.
-TODO: write some INSERT statements to put some real data in there.
-
-You might run a query like this to show upcoming events in the next 30
-days::
-
-  select events.event_date, events.name, musicians.name
-
-  join event_lineups
-  on events.event_id = event_lineups.event_id
-
-  join musicians
-  on event_lineups.musician_id = musicians.musician_id
-
-  -- only show future shows
-  where events.event_date > current_timestamp
-
-  -- only show the next 30 days worth of events
-  and events.event_date < current_timestamp + interval 30 days
-
-  order by events.event_date,
-  event_lineups.headliner, -- put headliners first
-  event_lineups.lineup_order
-
-If you find yourself doing that same select a bunch of times, you might
-create a view in your database, and just select from that view.
+    select * from upcoming_shows;
 
 GraphQL is kind of like that view!
 
 When you have that view, you query it, and you list out what rows and
 what columns you want.
+
+How to write a python GraphQL server?
+=====================================
+
+1.  First you write a schema:
+
+    a.  You write your types.  I think of these as the nouns.
+
+    b.  Next you write queries on those types.  I think of these as
+        the reads, or your GET API endpoints, or your SELECT queries in
+        SQL.
+
+    c.  You write mutations.  These are your writes.  Maybe your inserts, updates,
+        and deletes.
+
+    d.  I'm skipping how to write subscriptions.  They sure look cool!
+
+2.  Outside your schema, you write resolvers for your queries and for
+    your mutations.
+
+
+The schema for that simple bar
+==============================
+
+bogus_schema.graphql
+
+There's a war going on over how much should we write these schemas by
+hand, versus use code to build them up, versus use code to infer them by
+studying the underlying datasources, like databases, or REST APIs.
+
+
+
+
+
 
 What I like
 ===========
@@ -350,9 +309,22 @@ Warnings
 
     This problem has been around forever.
 
+Using curl with GraphQL is terrible!
+====================================
 
-How to write a python GraphQL server?
-=====================================
+Look at these files:
+
+  *   curl_example_viewer.sh
+  *   curl_example_user.sh
+
+    #! /bin/bash -e
+
+    echo "Looking up stuff for $2..."
+
+    /usr/bin/curl -X POST \
+    -H "Authorization: bearer $GITHUB_TOKEN" \
+    -d '{ "query": "query { user(login: \"'$1'\") { login company }}"
+    }' https://api.github.com/graphql
 
 
 Talk to me!

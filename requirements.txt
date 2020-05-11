@@ -1,1 +1,4 @@
+ariadne
+psycopg2
 gql
+
