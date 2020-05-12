@@ -1,10 +1,17 @@
 type Query {
   current_timestamp: String
   demo: DemoResponse
+  upcoming_shows: [Show]
 }
 
 type DemoResponse {
   current_timestamp: String
   bogus_field_a: String
   bogus_field_b: String
+}
+
+type Show {
+  event_date: String
+  musician_name: String
+  musician_website: String
 }

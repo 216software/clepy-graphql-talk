@@ -180,7 +180,7 @@ Contrived SQL example
 Imagine a small bar has a database to track musicians and when they
 play::
 
-    bogus_bar_1.sql
+    bogus_bar.sql
 
 If you love SQL, it's easy to do stuff like this::
 
@@ -225,6 +225,8 @@ What I dislike
 *   Using curl with GraphQL isn't fun!
 
 *   Using POSTs for reads goes against tradition.
+
+*   Everything spits back a 200 OK.
 
 *   Downloading a schema triggers SOAP and CORBA nightmare flashbacks.
 

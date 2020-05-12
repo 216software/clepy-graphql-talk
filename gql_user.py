@@ -32,7 +32,7 @@ if __name__ == "__main__":
         )
 
         query = gql('''
-            query getUserData($github_user: String!) {
+            query getasdasfdUserData($github_user: String!) {
                 user(login: $github_user) {
                     login
                     company

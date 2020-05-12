@@ -36,6 +36,7 @@ if __name__ == "__main__":
                 viewer {
                     login
                     company
+                    email
                 }
             }
         ''')

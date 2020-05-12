@@ -11,22 +11,6 @@ from ariadne import make_executable_schema
 
 query = ObjectType("Query")
 
-# @query.field("upcoming_shows")
-def resolve_upcoming_shows(obj, info):
-
-    print(info.context)
-
-def get_upcoming_shows(pgconn):
-
-    cursor = pgconn.cursor()
-
-    cursor.execute(textwrap.dedent("""
-        select *
-        from upcoming_shows
-        """))
-
-    return cursor
-
 @query.field("demo")
 def resolve_demo_query(_, info):
 
@@ -43,6 +27,9 @@ def resolve_current_timestamp(_, info):
         cursor.execute("select current_timestamp")
         return cursor.fetchone()[0]
 
+@query.field("upcoming_shows")
+def resolve_upcoming_shows(_, info):
+
 def build_app():
 
     if "PGCONN" not in os.environ:
@@ -56,7 +43,8 @@ def build_app():
             load_schema_from_path("bogus_schema.graphql"),
             query)
 
-        app = GraphQL(schema, debug=True, context_value=dict(pgconn=pgconn))
+        app = GraphQL(schema, debug=True,
+            context_value=dict(pgconn=pgconn))
 
         return app
 
