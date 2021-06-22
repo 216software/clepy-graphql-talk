@@ -160,12 +160,16 @@ These examples use the gql_ package.
 
 .. _gql: https://github.com/graphql-python/gql
 
-gql_viewer.py
+`gql_viewer.py`_
+
+.. _gql_viewer.py: gql_viewer.py
 
 Python client example using a variable
 ======================================
 
-gql_user.py
+`gql_user.py`_
+
+.. _gql_user.py: gql_user.py
 
 Notice:
 
@@ -267,8 +271,13 @@ Using curl with GraphQL is terrible!
 
 Look at these files:
 
-  *   curl_example_viewer.sh
-  *   curl_example_user.sh
+*   `curl_example_viewer.sh`_
+*   `curl_example_user.sh`_
+
+.. _curl_example_viewer.sh: curl_example_viewer.sh
+.. _curl_example_user.sh: curl_example_user.sh
+
+Here's an example of how to use curl::
 
     #! /bin/bash -e
 
