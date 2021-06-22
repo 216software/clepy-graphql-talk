@@ -294,7 +294,7 @@ Run a GraphQL server in python
 
 `python-graphql-servers.txt`_
 
-.. _python-graphql-servers.txt: python-graphql-servers.txt
+.. _python-graphql-servers.txt: python-graphsql-servers.txt
 
 
 Talk to me!
