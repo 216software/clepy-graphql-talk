@@ -52,4 +52,4 @@ Warnings
     blessed to access.
 
 
-.. vim: set filetype=rst: 
+.. vim: set filetype=rst syntax=rst: 
