@@ -1,5 +1,5 @@
 ++++++++++++++++++++++++++++++++++
-GraphQL and Python and my Opinions
+GraphQL and Python and My Opinions
 ++++++++++++++++++++++++++++++++++
 
 GraphQL is three steps forward and two steps back.
