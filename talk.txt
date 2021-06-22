@@ -289,6 +289,14 @@ Here's an example of how to use curl::
     }' https://api.github.com/graphql
 
 
+Run a GraphQL server in python
+==============================
+
+`python-graphql-servers.txt`_
+
+.. _python-graphql-servers.txt: python-graphql-servers.txt
+
+
 Talk to me!
 ===========
 
