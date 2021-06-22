@@ -21,18 +21,23 @@ How to write a python GraphQL server?
 Stupidest possible schema
 =========================
 
-ariadne_example.py
+`ariadne_example.py`_
+
+.. _ariadne_example.py: ariadne_example.py
 
 Use it like this::
 
-  curl -H "Content-Type: application/json" -X POST -d '{"query": "query {demo {current_timestamp bogus_field_a bogus_field_b} }"}' http://127.0.0.1:8000
-
-
+  curl -H "Content-Type: application/json" \
+  -X POST \
+  -d '{"query": "query {demo {current_timestamp bogus_field_a bogus_field_b} }"}' \
+  http://127.0.0.1:8000
 
 The schema for that simple bar
 ==============================
 
-bogus_schema.graphql
+`bogus_schema.graphql`_
+
+.. _bogus_schema.graphql: bogus_schema.graphql
 
 There's a war going on over how much should we write these schemas by
 hand, versus use code to build them up, versus use code to infer them by
